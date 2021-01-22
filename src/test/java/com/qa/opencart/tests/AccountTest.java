@@ -33,7 +33,7 @@ public class AccountTest extends BaseTest {
     @Test(priority=4)
     public void verifyAccountPageSectionListTest(){
         List<String> accSecList = accountsPage.getAccountSectionList();
-        System.out.println("the account list is : " + accSecList);
+        System.out.println(accSecList);
         Assert.assertEquals(accSecList,Constants.getAccSecList());
     }
 
