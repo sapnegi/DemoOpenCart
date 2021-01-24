@@ -1,47 +1,30 @@
+
 pipeline{
     agent any
     stages{
         stage('Build'){
             steps{
-                echo"Build"
+                echo"Building"
             }
         }
-        stage('Deploy on Dev'){
+        stage('Test'){
             steps{
-                echo"Deploy on Dev"
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE')
+                sh "mvn clean install"
             }
         }
-        stage('Deploy on QA'){
+        stage('Publish Allure Reports'){
             steps{
-                echo"Deploy on QA"
+                script{
+                    allure([
+                        includeProperties: false,
+                        jdk: '',
+                        properties: [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: '/allure-results']]
+                    ])
+                }
             }
         }
-        stage('Sanity test'){
-            steps{
-                echo"Sanity Test"
-            }
-        }
-        stage('Regression test'){
-            steps{
-                echo"Regression Test"
-            }
-        }
-
-        stage('Deploy on stage'){
-            steps{
-                echo"Deploy on stage"
-            }
-        }
-        stage('sanity test on stage'){
-            steps{
-                echo "Stage sanity test"
-            }
-        }
-        stage('Deploy on prod'){
-            steps{
-                echo"Deploy on prod"
-            }
-        }
-
     }
 }
